@@ -26,6 +26,9 @@ def send_to_discord(name, rank):
 print(response.status_code)
 print(response.text)  # <- Tilføj denne linje
 
+print(response.status_code)
+print(response.text)  # <- Tilføj denne linje
+
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error sending to Discord: {e}")
