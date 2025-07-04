@@ -3,8 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1390450314099953775/Pq6-VeU7wLLHqreziF5LuLNJhls5yjFhmGeesiK7q1axDowUIxFo1mhopWB6L2aee6Wg"
-
+https://discord.com/api/webhooks/1390452061723955240/1-ymXdkl552bfpT8M8szpRlTBdX48GE33SVEkJ0nHCcCz3_SXLDvwTVXYSW2WyHY8p9m
 @app.route("/api", methods=["POST"])
 def api():
     data = request.get_json()
