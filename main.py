@@ -4,6 +4,7 @@ import requests
 app = Flask(__name__)
 
 DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1390452061723955240/1-ymXdkl552bfpT8M8szpRlTBdX48GE33SVEkJ0nHCcCz3_SXLDvwTVXYSW2WyHY8p9m"
+
 @app.route("/api", methods=["POST"])
 def api():
     data = request.get_json()
@@ -18,14 +19,12 @@ def api():
     return jsonify({"status": "received"})
 
 def send_to_discord(name, rank):
-    content = f"🧙‍♂️ **{name}** joined the clan as **{rank}**!"
+    content = f"👤 **{name}** joined the clan as **{rank}**!"
     payload = {"content": content}
     try:
         response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
-print(response.status_code)
-print(response.status_code)
-print(response.text)  # <- Tilføj denne linje
-
+        print(response.status_code)
+        print(response.text)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error sending to Discord: {e}")
