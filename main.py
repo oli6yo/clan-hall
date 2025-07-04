@@ -1,28 +1,35 @@
 from flask import Flask, request, jsonify
 import requests
+import json
 
 app = Flask(__name__)
 
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/..."  # Udskift med din rigtige webhook
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/..."  # ← Udskift med din egen
 
 @app.route("/api", methods=["POST"])
 def api():
     try:
         data = request.get_json(force=True)
-        print("✅ Modtaget data:", data)
+        print("📥 Modtaget data:")
+        print(json.dumps(data, indent=2))  # 🔍 LOG ALT
 
-        if data and "members" in data:
+        # Du kan evt. validere client_id og secret her
+        client_id = data.get("client_id", "")
+        client_secret = data.get("client_secret", "")
+        print("🔑 Client ID:", client_id)
+        print("🗝️ Client Secret:", client_secret)
+
+        if "members" in data:
             for member in data["members"]:
                 name = member.get("name", "Unknown")
                 rank = member.get("rank", "Unknown")
                 send_to_discord(name, rank)
         else:
-            print("⚠️ Data er ikke som forventet:", data)
-
+            print("⚠️ Ingen 'members' fundet i data")
         return jsonify({"status": "received"}), 200
 
     except Exception as e:
-        print("❌ Fejl ved behandling af request:", e)
+        print("❌ Fejl:", e)
         return jsonify({"status": "error", "message": str(e)}), 400
 
 
@@ -31,8 +38,8 @@ def send_to_discord(name, rank):
     payload = {"content": content}
     try:
         response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
-        print("📨 Discord respons:", response.status_code)
-        print("🧾 Discord svar:", response.text)
+        print("✅ Discord response:", response.status_code)
+        print("📨 Discord svar:", response.text)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"❌ Fejl ved sending til Discord: {e}")
