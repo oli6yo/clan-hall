@@ -19,7 +19,7 @@ def api():
     return jsonify({"status": "received"})
 
 def send_to_discord(name, rank):
-    content = f"👤 **{name}** joined the clan as **{rank}**!"
+    content = f"🧑‍💻 **{name}** joined the clan as **{rank}**!"
     payload = {"content": content}
     try:
         response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
