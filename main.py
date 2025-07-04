@@ -12,7 +12,7 @@ def index():
 @app.route('/api/activity', methods=['POST'])
 def receive_activity():
     try:
-        data = request.get_json()
+        data = request.get_json(force=True, silent=True) or {}
         print("Received /api/activity data:", data)
 
         if not data:
@@ -41,7 +41,7 @@ def receive_activity():
 @app.route('/api/members', methods=['POST'])
 def receive_members():
     try:
-        data = request.get_json()
+        data = request.get_json(force=True, silent=True) or {}
         print("Received /api/members data:", data)
 
         members = data.get("members", [])
@@ -61,7 +61,7 @@ def receive_members():
 @app.route('/api/settings', methods=['POST'])
 def receive_settings():
     try:
-        data = request.get_json()
+        data = request.get_json(force=True, silent=True) or {}
         print("Received /api/settings data:", data)
 
         content = f"**Clan Hall Settings Updated**\n```json\n{data}```"
@@ -72,6 +72,17 @@ def receive_settings():
     except Exception as e:
         print("Error in /api/settings:", str(e))
         return jsonify({"error": "Server error"}), 500
+
+# Valgfrit ekstra endpoint til test/debug:
+@app.route('/api/debug', methods=['POST'])
+def debug():
+    try:
+        data = request.get_json(force=True, silent=True) or {}
+        print("DEBUG DATA:", data)
+        return jsonify(data), 200
+    except Exception as e:
+        print("DEBUG ERROR:", str(e))
+        return jsonify({"error": "debug failed"}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
