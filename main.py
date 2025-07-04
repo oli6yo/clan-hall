@@ -23,6 +23,9 @@ def send_to_discord(name, rank):
     payload = {"content": content}
     try:
         response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
+print(response.status_code)
+print(response.text)  # <- Tilføj denne linje
+
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error sending to Discord: {e}")
